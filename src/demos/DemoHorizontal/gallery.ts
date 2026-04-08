@@ -1,9 +1,9 @@
 import * as THREE from "three";
 
-import vertexShader from "./shaders/vertex.glsl?raw";
-import fragmentShader from "./shaders/fragment.glsl?raw";
+import vertexShader from "../../shaders/vertex.glsl?raw";
+import fragmentShader from "../../shaders/fragment.glsl?raw";
 
-export class Gallery {
+export class HorizontalGallery {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer;
@@ -12,7 +12,7 @@ export class Gallery {
   meshes: THREE.Mesh[] = [];
 
   scroll = 0;
-  speed = 0.02;
+  speed = 0.004;
 
   constructor() {
     this.scene = new THREE.Scene();
@@ -20,11 +20,11 @@ export class Gallery {
     this.camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
-      0.1,
+      0.3,
       100,
     );
 
-    this.camera.position.z = 5;
+    this.camera.position.z = 3;
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: document.querySelector("#webgl") as HTMLCanvasElement,
@@ -32,12 +32,15 @@ export class Gallery {
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     this.images = [
       "/images/1.jpg",
       "/images/2.jpg",
       "/images/3.jpg",
       "/images/4.jpg",
+      "/images/5.jpg",
+      "/images/6.jpg",
     ];
 
     this.createGallery();
@@ -50,7 +53,7 @@ export class Gallery {
   createGallery() {
     const loader = new THREE.TextureLoader();
 
-    const geometry = new THREE.PlaneGeometry(2, 1.5);
+    const geometry = new THREE.PlaneGeometry(2, 1.5, 1, 1);
 
     this.images.forEach((img, index) => {
       const texture = loader.load(img);
@@ -66,7 +69,8 @@ export class Gallery {
 
       const mesh = new THREE.Mesh(geometry, material);
 
-      mesh.position.y = index * 2;
+      // distribuição horizontal
+      mesh.position.x = index * 2.5;
 
       this.scene.add(mesh);
 
@@ -77,17 +81,27 @@ export class Gallery {
   updateScroll() {
     this.scroll += this.speed;
 
-    this.meshes.forEach((mesh) => {
-      mesh.position.y -= this.speed;
+    const spacing = 2.5;
+    const total = this.meshes.length;
+    const totalWidth = total * spacing;
 
-      if (mesh.position.y < -4) {
-        mesh.position.y += this.meshes.length * 2;
+    this.meshes.forEach((mesh, index) => {
+      let x = index * spacing - this.scroll;
+
+      while (x < -spacing) {
+        x += totalWidth;
       }
+
+      while (x > totalWidth - spacing) {
+        x -= totalWidth;
+      }
+
+      mesh.position.x = x;
     });
   }
 
   animate() {
-    requestAnimationFrame(this.animate.bind(this));
+    requestAnimationFrame(() => this.animate());
 
     this.updateScroll();
 
