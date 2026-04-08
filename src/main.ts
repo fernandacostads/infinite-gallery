@@ -19,4 +19,8 @@ document.getElementById("demo4")?.addEventListener("click", () => {
   manager.start("hover");
 });
 
+document.getElementById("demo5")?.addEventListener("click", () => {
+  manager.start("parallax");
+});
+
 manager.start("vertical");
