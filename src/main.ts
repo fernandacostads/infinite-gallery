@@ -1,35 +1,18 @@
 import "./style.css";
+import { DemoManager } from "./demos/core/DemoManager";
 
-import { VerticalGallery } from "./demos/DemoVertical/gallery";
-import { HorizontalGallery } from "./demos/DemoHorizontal/gallery";
+const manager = new DemoManager();
 
-let currentApp: any = null;
+document.getElementById("demo1")?.addEventListener("click", () => {
+  manager.start("vertical");
+});
 
-function startVertical() {
-  if (currentApp) dispose();
+document.getElementById("demo2")?.addEventListener("click", () => {
+  manager.start("horizontal");
+});
 
-  currentApp = new VerticalGallery();
-}
+document.getElementById("demo3")?.addEventListener("click", () => {
+  manager.start("distortion");
+});
 
-function startHorizontal() {
-  if (currentApp) dispose();
-
-  currentApp = new HorizontalGallery();
-}
-
-function dispose() {
-  const canvas = document.querySelector("#webgl") as HTMLCanvasElement;
-  const gl = canvas.getContext("webgl");
-
-  if (gl) {
-    gl.getExtension("WEBGL_lose_context")?.loseContext();
-  }
-
-  currentApp = null;
-}
-
-document.getElementById("demo1")?.addEventListener("click", startVertical);
-
-document.getElementById("demo2")?.addEventListener("click", startHorizontal);
-
-startVertical();
+manager.start("vertical");
