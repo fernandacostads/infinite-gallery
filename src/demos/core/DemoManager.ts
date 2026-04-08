@@ -1,6 +1,7 @@
 import { VerticalGallery } from "../DemoVertical/gallery";
 import { HorizontalGallery } from "../DemoHorizontal/gallery";
 import { GalleryScrollDistortion } from "../DemoScrollDistortion/gallery";
+import { GalleryHover } from "../DemoHoverEffect/gallery";
 
 export class DemoManager {
   currentDemo: any = null;
@@ -9,6 +10,7 @@ export class DemoManager {
     vertical: VerticalGallery,
     horizontal: HorizontalGallery,
     distortion: GalleryScrollDistortion,
+    hover: GalleryHover,
   };
 
   start(name: string) {

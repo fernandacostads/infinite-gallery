@@ -15,4 +15,8 @@ document.getElementById("demo3")?.addEventListener("click", () => {
   manager.start("distortion");
 });
 
+document.getElementById("demo4")?.addEventListener("click", () => {
+  manager.start("hover");
+});
+
 manager.start("vertical");
