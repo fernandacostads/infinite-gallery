@@ -30,3 +30,13 @@ button {
   border-radius: 6px;
   cursor: pointer;
 }
+
+button:hover {
+  font-size: smaller;
+  opacity: 90%;
+}
+
+button:active {
+  font-size: small;
+  opacity: 80%;
+}
